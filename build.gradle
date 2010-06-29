@@ -59,9 +59,9 @@ task dist(dependsOn: [build, cleanDist])  << {
 task deploy(dependsOn: dist) << {
     description = 'deploy dist dir to remote server.'
      
-    def destServer = 'bowerstudios.com'
+    def destServer = 'serenity'
     def destUser = 'daniel'
-    def destPath = '/home/daniel/connectionCheck/'
+    def destPath = '/home/daniel/apps/connCheck'
     def keyfileLocation = '${user.home}/.ssh/id_rsa'
     def deployDir = (project.projectDir.path + "/dist")
     
