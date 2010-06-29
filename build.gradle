@@ -29,7 +29,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.7'
     testCompile group: 'org.easymock', name: 'easymock', version: '2.0'
    
-    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.12'
+    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.6.16'
     
     //logging
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.5.11'
@@ -107,7 +107,7 @@ task deploy(dependsOn: dist) << {
             }
     }
     
-    ant.echo(message: "Double check the properties files to be sure no new properties exist.  This deploy ONLY replaces all the jar files in the directory.  Nothing further is touched")
+    ant.echo(message: "This deploy ONLY replaces all the jar files in the directory.  Nothing further is touched")
 }
 
 
