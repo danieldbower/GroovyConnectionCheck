@@ -7,35 +7,31 @@ import static org.junit.Assert.*
 
 class ApplicationTest {
 
-	@Test
-	void execute(){
-		Application app = new Application()
-		
-		app.check = { url ->
-			return false
-		}
-		
-		List urls = app.execute()
-		
-		println urls
-		
-		assertEquals(3, urls.size())
-		
-		assertTrue(urls[0]!=urls[1])
-		assertTrue(urls[1]!=urls[2])
-		assertTrue(urls[0]!=urls[2])
+	Application app
+	
+	@Before
+	void setup(){
+		app = new Application()
 	}
 	
 	@Test
-	void check(){
-		Application app = new Application()
-		app.checkNetwork = [externalConnectionExists:{url -> return true }]
-		app.persistStatistic = [persistStatistic:{url, up, date -> }]
+	void execute(){
+		app.checkUrl = {url ->
+			app.testedUrls.add url
+			return new CheckNetwork(
+					url:url,
+					responseCodeForUrl:0,
+					connectionExists:false) }
 		
-		assertTrue(app.check("test.com"))
+		app.execute(null)
 		
-		app.checkNetwork = [externalConnectionExists:{url -> return false }]
-		assertTrue(!app.check("test.com"))
+		println app.testedUrls
+		
+		assertEquals(3, app.testedUrls.size())
+		
+		assertTrue(app.testedUrls[0]!=app.testedUrls[1])
+		assertTrue(app.testedUrls[1]!=app.testedUrls[2])
+		assertTrue(app.testedUrls[0]!=app.testedUrls[2])
 	}
 	
 }

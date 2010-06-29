@@ -7,55 +7,57 @@ class Application {
 	* @param args
 	*/
    static void main(String[] args){
-	   new Application().execute()
+	   new Application().execute(args)
    }
    
-   def domains = ["google.com", "slashdot.org", "yahoo.com", "microsoft.com", 
-	   "cnet.com", "apple.com", "dell.com", "espn.com", "facebook.com", "springsource.org"]
+   static final def domains = ["http://google.com", "http://slashdot.org", "http://yahoo.com", 
+	   "http://microsoft.com", "http://cnet.com", "http://apple.com", 
+	   "http://dell.com", "http://espn.com", "http://facebook.com", 
+	   "http://springsource.org"]
+   
+   protected List testedUrls
    
    /**
     * See if the external connection is working.  return a list of urls attempted.
     * @return list
     */
-   List execute(){
-	   List urls = ["bowerstudios.com"]
+   void execute(String[] args){
+   		if(args){
+			new PersistStatistic().printContents()
+		}else{
+			checkConnectivity()
+		}
+   }
+   
+   protected void checkConnectivity(){
+	   //set empty list of urls tested
+	   testedUrls = []
 	   
-	   boolean up = check("bowerstudios.com");
+	   //try your own service first, just to be neighborly...
+	   CheckNetwork cn = checkUrl("http://bowerstudios.com/ping.txt")
 	   
-	   if(!up){
-		   int i = Math.random() * 10
-		   up = check(domains[i])
-		   urls.add(domains[i])
+	   //if failed, try another
+	   if(!cn.connectionExists){
+		   int randomDomainIndex = Math.random() * 10
+		   cn = checkUrl(domains[randomDomainIndex])
 		   
-		   if(!up){
-			   up = check(domains[i+1])
-			   urls.add(domains[i+1])
+		   //if still failed, try one more time
+		   if(!cn.connectionExists){
+			   cn = checkUrl(domains[randomDomainIndex+1])
 		   }
 	   }
+   }
+   
+   protected checkUrl = { String url ->
+	   CheckNetwork cn = new CheckNetwork()
+	   cn.execute(url)
 	   
-	   return urls
-   }
-   
-   def check = {String url ->
-	   boolean up = getCheckNetwork().externalConnectionExists(url)
-	   getPersistStatistic().persistStatistic(url, up, new Date())
-	   return up;
-   }
-   
-   protected def checkNetwork
-   protected def getCheckNetwork(){
-	   if(!checkNetwork){
-		   checkNetwork = new CheckNetwork()
-	   }
-	   return checkNetwork
-   }
-   
-   protected def persistStatistic
-   protected def getPersistStatistic(){
-	   if(!persistStatistic){
-		   persistStatistic = new PersistStatistic()
-	   }
-	   return persistStatistic
+	   testedUrls.add(cn.url)
+	   
+	   PersistStatistic persist = new PersistStatistic();
+	   persist.execute(cn.url, cn.responseCodeForUrl, cn.connectionExists)
+	   
+	   return cn
    }
    
 }
