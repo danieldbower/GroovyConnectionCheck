@@ -26,6 +26,8 @@ class CheckNetwork {
 			responseCode = connection.getResponseCode()
 		}catch(ConnectException ce){
 			responseCode = 0;
+		}catch(UnknownHostException uhe){
+			responseCode = 0;
 		}
 		
 		return responseCode

@@ -24,7 +24,7 @@ class PersistStatistic {
 	void printContents(){
 		def sql = getDb()
 		sql.rows("select * from checks order by date desc").each{
-			println(it)
+			println("url:" + it.url + " up:" + it.up + " response code:" + it.responseCode + " date: " + new Date(it.date.toLong()) )
 		}
 		
 	}
