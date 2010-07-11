@@ -1,5 +1,8 @@
 package com.bowerstudios.connectioncheck
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 class Application {
 
 	/**
@@ -10,12 +13,21 @@ class Application {
 	   new Application().execute(args)
    }
    
-   static final def domains = ["http://google.com", "http://slashdot.org", "http://yahoo.com", 
-	   "http://microsoft.com", "http://cnet.com", "http://apple.com", 
+   static final def domains = ["http://www.google.com", "http://slashdot.org", "http://www.yahoo.com", 
+	   "http://www.microsoft.com", "http://cnet.com", "http://apple.com", 
 	   "http://dell.com", "http://espn.com", "http://facebook.com", 
 	   "http://springsource.org"]
    
    protected List testedUrls
+   
+   private Logger logger
+   
+   private Logger getLogger(){
+	   if(!logger){
+		   logger = LoggerFactory.getLogger("com.bowerstudios.connectioncheck.Application")
+	   }
+	   return logger
+   }
    
    /**
     * See if the external connection is working.  return a list of urls attempted.
@@ -30,6 +42,8 @@ class Application {
    }
    
    protected void checkConnectivity(){
+	   getLogger().debug ("Checking Connectivity")
+	   
 	   //set empty list of urls tested
 	   testedUrls = []
 	   
