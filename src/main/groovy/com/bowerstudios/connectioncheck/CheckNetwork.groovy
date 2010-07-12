@@ -31,14 +31,21 @@ class CheckNetwork {
 	 */
 	protected int getResponseCodeForUrl(String url){
 		int responseCode = 0
-		URL server = new URL(url);
+		URL server;
 		
 		try{
-			HttpURLConnection connection = (HttpURLConnection) server.openConnection()
-			responseCode = connection.getResponseCode()
-		}catch(Exception e){
-			responseCode = 0
-			getLogger().info "Invalid Connection", e
+			server = new URL(url);
+		}catch(MalformedURLException e){
+			getLogger().info "Url is possibly invalid, tried: $url", e
+		}
+		
+		if(server){
+			try{
+				HttpURLConnection connection = (HttpURLConnection) server.openConnection()
+				responseCode = connection.getResponseCode()
+			}catch(Exception e){
+				getLogger().info "Invalid Connection", e
+			}
 		}
 		
 		return responseCode
