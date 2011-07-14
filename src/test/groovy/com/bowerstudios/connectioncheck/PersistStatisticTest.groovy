@@ -10,7 +10,7 @@ class PersistStatisticTest {
 	
 	@Before
 	void setup(){
-		stats.dbLocation = "jdbc:sqlite:/code/groovy/projects/workspace/ConnectionCheck/dist/connCheckTest.db"
+		stats.dbLocation = "jdbc:sqlite:/code/groovy/projects/GroovyConnectionCheck/dist/connCheckTest.db"
 	}
 	
 	@Test

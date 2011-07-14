@@ -2,7 +2,7 @@ package com.bowerstudios.connectioncheck
 
 class PersistStatistic {
 
-	String dbLocation = "jdbc:sqlite:/home/daniel/apps/connCheck/connCheck.db"
+	String dbLocation = "jdbc:sqlite:/usr/local/connCheck/connCheck.db"
 	String dbDriver = "org.sqlite.JDBC"
 	
 	void execute(String url, int responseCode, boolean up){
