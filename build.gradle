@@ -10,7 +10,7 @@ targetCompatibility = '1.6'
 manifest.mainAttributes("Main-Class" : "com.ecommerce.Application",
                                             'Provider': group,
                                             'Implementation-Version': version,
-                                            'Built-With': ('gradle-' + new GradleVersion().getVersion()),
+                                            'Built-With': ('gradle-' + project.getGradle().getGradleVersion()),
                                             'Class-Path': '.'
                                             )
 
@@ -40,6 +40,7 @@ dependencies {
 }
 
 task cleanDist << {
+    //you may need to create the logs directory manually, or this step may fail
     ant.echo(message: "Cleaning dist directory:  ${project.projectDir}/dist/")
     ant.delete (verbose: true){
         fileset(dir: "${project.projectDir}/dist/", includes: "**/*.jar")
@@ -61,7 +62,7 @@ task deploy(dependsOn: dist) << {
      
     def destServer = 'serenity'
     def destUser = 'daniel'
-    def destPath = '/home/daniel/apps/connCheck'
+    def destPath = '/usr/local/connCheck'
     def keyfileLocation = '${user.home}/.ssh/id_rsa'
     def deployDir = (project.projectDir.path + "/dist")
     
